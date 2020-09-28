@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<insert id="insertUser" parameterType="hashmap">
+		INSERT INTO USERS (USERNAME,PASSWORD,ENABLED)
+		VALUES (#{ID},#{PW},1)
+	</insert>
+	<insert id="insertAuth" parameterType="hashmap">
+		INSERT INTO AUTHORITIES (USERNAME,AUTHORITY)
+		VALUES (#{ID},#{AUTH})
+	</insert>
+	<insert id="insertLog" parameterType="hashmap">
+		INSERT INTO LOGIN_LOG (USERNAME,WORKDATE,TYPE)
+		VALUES (#{ID},#{DATE},#{TYPE})
+	</insert>		
+	<select id="getUserById" parameterType="hashmap" resultType="com.std.sec.customuser.CustomUserDetails">
+		SELECT
+			U.USERNAME AS USERNAME,
+			U.ENABLED AS ENABLED,
+			U.PASSWORD AS PASSWORD,
+			A.AUTHORITY AS AUTHORITY 
+		FROM USERS U,AUTHORITIES A WHERE U.USERNAME=A.USERNAME AND U.USERNAME=#{id}
+	</select>
+	<select id="getLogList" parameterType="String"  resultType="com.std.sec.log.LogDto">
+		SELECT 
+		USERNAME,
+		WORKDATE AS DATE,
+		TYPE
+		FROM LOGIN_LOG WHERE USERNAME=#{id} ORDER BY WORKDATE DESC
+	</select>
+	<insert id ="insertPictureInfo" parameterType="com.std.sec.gallery.GalleryDto">
+		INSERT INTO GALLERY (USERNAME,FILESIZE,UPLOADDATE,FILENAME) VALUES ('${username}','${fileSize}','${uploadDate}','${filename}')
+	</insert>
+	<select id = "selectimg" parameterType="com.std.sec.gallery.GalleryDto" resultType="com.std.sec.gallery.GalleryDto">
+		SELECT USERNAME,FILESIZE,UPLOADDATE,FILENAME FROM GALLERY WHERE USERNAME='${username}' AND FILENAME='${filename}'
+	</select>
+	<select id = "selectimglist" parameterType="hashmap" resultType="com.std.sec.gallery.GalleryDto">
+		SELECT USERNAME,FILESIZE,UPLOADDATE,FILENAME FROM GALLERY WHERE USERNAME='${username}' ORDER BY UPLOADDATE DESC
+	</select>
+</mapper>
