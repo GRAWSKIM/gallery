@@ -1,0 +1,7 @@
+1. 프로젝트 내 root-context.xml에서 DB 경로 수정
+root-context.xml 위치 : {프로젝트 경로}\src\main\webapp\WEB-INF\spring\root-context.xml
+
+2. root-context.xml 내의 프로젝트 경록를 잡아준다. 
+been id= "dataSource" 의 프로퍼티에 접근
+아래 {프로젝트 경로}에 이 프로젝트의 절대경로를 설정한다.
+<property name="url" value="jdbc:sqlite:{프로젝트 경로}\src\main\resources\gallerydb.db" />
